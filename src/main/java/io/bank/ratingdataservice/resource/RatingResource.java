@@ -13,16 +13,22 @@ import java.util.List;
 @RequestMapping("/ratingsdata")
 public class RatingResource {
 
+    List<Rating> ratings= Arrays.asList(new Rating("pr1","3"),
+            new Rating("pr2","4"),
+            new Rating("pr3","2"),
+            new Rating("pr4","5"),
+            new Rating("pr5","4"),
+            new Rating("pr6","1"));
+
     @RequestMapping("/{productId}")
     public Rating getRating(@PathVariable("productId") String productId) {
-        return new Rating(productId, "4");
+
+      Rating ratingValue = ratings.stream().filter(rating -> rating.getProductId().equalsIgnoreCase(productId)).findFirst().orElse(new Rating(productId,"no Rating"));
+        return ratingValue;
     }
 
     @RequestMapping("users/{userId}")
     public UserRating getUserRating(@PathVariable("userId") String userId){
-        List<Rating> ratings= Arrays.asList(new Rating("pr1","3"),
-                new Rating("pr2","4"));
-
         UserRating userRating = new UserRating();
         userRating.setUserRating(ratings);
         return userRating;
